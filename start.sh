@@ -1,15 +1,16 @@
 #!/bin/bash
+set -e
 
-# Generar key si no existe
+echo "🔑 Generating app key..."
 php artisan key:generate --force
 
-# Migraciones
+echo "🧬 Running migrations..."
 php artisan migrate --force
 
-# Optimizaciones
+echo "⚙️ Caching config..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Iniciar Apache
-apache2-foreground
+echo "🚀 Starting Apache..."
+exec apache2-foreground
