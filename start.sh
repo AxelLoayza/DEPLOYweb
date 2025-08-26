@@ -1,16 +1,19 @@
 #!/bin/bash
 set -e
 
-echo "🔑 Generating app key..."
+# Generar key si no existe
 php artisan key:generate --force
 
-echo "🧬 Running migrations..."
+# Ejecutar migraciones
 php artisan migrate --force
 
-echo "⚙️ Caching config..."
+# Limpiar y cachear configuraciones
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "🚀 Starting Apache..."
-exec apache2-foreground
+# Configurar permisos de almacenamiento
+chown -R www-data:www-data storage bootstrap/cache
+
+# Iniciar Apache en primer plano
+apache2-foreground

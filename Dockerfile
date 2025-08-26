@@ -34,10 +34,13 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Permisos
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Script de inicio
-COPY start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
+# Configurar puerto para Render
+ENV PORT=80
+EXPOSE 80
 
-CMD ["/usr/local/bin/start.sh"]
+# Eliminar el CMD anterior y usar ENTRYPOINT con el script de inicio
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
