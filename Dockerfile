@@ -3,9 +3,12 @@ FROM php:8.2-apache
 RUN apt-get update && apt-get install -y \
     git \
     zip \
-    unzip
+    unzip \
+    libpng-dev \
+    libzip-dev
 
-RUN docker-php-ext-install pdo_mysql
+# Install and enable MySQL PDO
+RUN docker-php-ext-install pdo_mysql zip
 
 WORKDIR /var/www/html
 
